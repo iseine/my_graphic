@@ -1,19 +1,13 @@
 ﻿#include <iostream>
 #include <cmath>
 #include<array>
+#include"MyMath.h"
 #define _USE_MATH_DEFINES
 
 using namespace std;
 
-struct myRender_vector_4 {
-	std::array<float, 4>  position;
-	//float position[4] = { 0 };
-	std::array<short, 3> color;
-	//short color[3] = { 0 };
-};
-struct myRender_triangle {
-	std::array<int, 3> index;
-};
+
+
 
 int main()
 {
