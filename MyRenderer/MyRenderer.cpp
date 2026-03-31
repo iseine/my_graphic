@@ -2,6 +2,7 @@
 #include <cmath>
 #include<array>
 #include"MyMath.h"
+#include"transform.h"
 #define _USE_MATH_DEFINES
 
 using namespace std;
@@ -28,4 +29,13 @@ int main()
 	cube_index[6].index = { 5,7,2 }; cube_index[7].index = { 2,3,5 };//上面
 	cube_index[8].index = { 4,6,1 }; cube_index[9].index = { 1,0,4 };//下面
 	cube_index[10].index = { 4,6,7 }; cube_index[11].index = { 7,5,4 };//正面
+
+	struct camera_set myCamera;
+	myCamera.position = { 2,2,5,0 };
+	myCamera.lookat = { 0.5, 0.5, 0.5, 0 };
+	myCamera.up = { 0,1,0,0 };
+
+	MVP_trans(myCamera, cube, sizeof(cube)/sizeof(cube[0]));
+
+
 }

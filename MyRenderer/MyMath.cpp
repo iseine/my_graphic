@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 #include<array>
 #include"MyMath.h"
 #define _USE_MATH_DEFINES
