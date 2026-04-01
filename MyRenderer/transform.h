@@ -10,4 +10,4 @@ struct camera_set {
 	std::array<float, 4>  up = { 0 };
 };
 
-struct Matrix3D MVP_trans(struct camera_set camera,myRender_vector_4 *vector,int size);
+struct Matrix3D MVP_trans(struct camera_set camera, myRender_vector_4* vector, int size);

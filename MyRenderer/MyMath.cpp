@@ -5,6 +5,15 @@
 
 using namespace std;
 
+struct myRender_vector_4 cross_product3D(const std::array<float, 4>& a, const std::array<float, 4>& b)
+{
+	struct myRender_vector_4 sum;
+	sum.position[0] = a[1] * b[2] - a[2] * b[1];
+	sum.position[1] = a[0] * b[2] - a[2] * b[0];
+	sum.position[2] = a[0] * b[1] - a[1] * b[0];
+	return sum;
+}
+
 
 struct Matrix3D Matrix3D_muilti(struct Matrix3D mat1, struct Matrix3D mat2)
 {
@@ -21,8 +30,6 @@ struct Matrix3D Matrix3D_muilti(struct Matrix3D mat1, struct Matrix3D mat2)
 	}
 	return sum;
 }
-
-
 
 struct myRender_vector_4 Matrix3D_muilti(struct myRender_vector_4 vector, struct Matrix3D mat)
 {
