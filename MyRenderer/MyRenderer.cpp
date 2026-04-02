@@ -35,6 +35,11 @@ int main()
 	myCamera.lookat = { 0.5, 0.5, 0.5, 0 };
 	myCamera.up = { 0,1,0,0 };
 
+	struct viewing_frustum_Prespective myFrustum;
+	myFrustum.near = 0.1f;
+	myFrustum.far = 10.0f;
+	myFrustum.wei_high_proportion = 1.0f / 1.0f;//45°角，丑但是好验证
+
 	MVP_trans(myCamera, cube, sizeof(cube)/sizeof(cube[0]));
 
 
