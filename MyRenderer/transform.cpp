@@ -5,15 +5,19 @@
 #include"transform.h"
 #define _USE_MATH_DEFINES
 
-struct Matrix3D MVP_trans(struct camera_set camera, struct myRender_vector_4 *vector,int size)
+void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struct viewing_frustum_Prespective myFrustum,int width,int height)
 {
 	struct Matrix3D view_matrix;
 
 	struct Matrix3D translation;
 	struct Matrix3D rotate;
+	struct Matrix3D prespective;
 
 	struct myRender_vector_4 camera_X_axis;
+
 	
+	float screen_x, screen_y;
+
 	camera_X_axis =	cross_product3D(camera.lookat, camera.up);
 
 	translation.matrix[0][3] = camera.position[0];
@@ -41,5 +45,24 @@ struct Matrix3D MVP_trans(struct camera_set camera, struct myRender_vector_4 *ve
 
 	view_matrix = Matrix3D_muilti(translation, rotate);
 
+	float rad = myFrustum.fov * 3.1415926535f / 180.0f;
+	float tan_half = tanf(rad / 2.0f);
+
+	prespective.matrix[0][0] = 1.0f / (myFrustum.aspect * tan_half);
+	prespective.matrix[1][1] = 1.0f / tan_half;
+	prespective.matrix[2][2] = -(myFrustum.myfar + myFrustum.mynear) / (myFrustum.myfar - myFrustum.mynear);
+	prespective.matrix[2][3] = -(2.0f * myFrustum.myfar * myFrustum.mynear) / (myFrustum.myfar - myFrustum.mynear);
+	prespective.matrix[3][2] = -1.0f;
+
+	vector = Matrix3D_muilti(view_matrix, vector);
+	vector = Matrix3D_muilti(prespective, vector);
+	
+	float w = 1.0f / vector.position[3];
+	vector.position[0] *= w;
+	vector.position[1] *= w;
+	vector.position[2] *= w;
+	
+	vector.position[0] = (vector.position[0] + 1) * 0.5 * width;
+	vector.position[1] = ((1 - (vector.position[1] + 1)) * 0.5) * height;
 
 }

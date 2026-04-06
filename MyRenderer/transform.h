@@ -10,9 +10,12 @@ struct camera_set {
 	std::array<float, 4>  up = { 0 };
 };
 struct viewing_frustum_Prespective {
-	float near = 0 ;
-	float far = 0;
-	float wei_high_proportion = 0;//宽高比
+	float mynear = 0 ;
+	float myfar = 0;
+	float aspect = 0;//宽高比
+	float fov = 0;
+
 };
 
-struct Matrix3D MVP_trans(struct camera_set camera, myRender_vector_4* vector, int size);
+void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struct viewing_frustum_Prespective myFrustum, int width, int height)
+;

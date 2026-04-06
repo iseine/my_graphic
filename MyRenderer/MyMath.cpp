@@ -31,15 +31,15 @@ struct Matrix3D Matrix3D_muilti(struct Matrix3D mat1, struct Matrix3D mat2)
 	return sum;
 }
 
-struct myRender_vector_4 Matrix3D_muilti(struct myRender_vector_4 vector, struct Matrix3D mat)
+struct myRender_vector_4 Matrix3D_muilti(struct Matrix3D mat,struct myRender_vector_4 vector )
 {
 	struct myRender_vector_4 sum;
 	sum.color = vector.color;
-	for (int j = 0; j <4 ; j++)
+	for (int i = 0; i <4 ; i++)
 	{
-		for (int k = 0; k < 4; k++)
+		for (int j = 0; j < 4; j++)
 		{
-			sum.position[j] += vector.position [k] * mat.matrix [k][j];
+			sum.position[i] += mat.matrix[i][j] * vector.position[j];
 		}
 	}
 	return sum;

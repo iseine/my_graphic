@@ -21,5 +21,5 @@ struct myRender_triangle {
 struct myRender_vector_4 cross_product3D(const std::array<float, 4>& a, const std::array<float, 4>& b);
 //3D
 struct Matrix3D Matrix3D_muilti(struct Matrix3D mat1, struct Matrix3D mat2);
-struct myRender_vector_4 Matrix3D_muilti(struct myRender_vector_4 vector, struct Matrix3D mat);
+struct myRender_vector_4 Matrix3D_muilti(struct Matrix3D mat, struct myRender_vector_4 vector);
 struct Matrix3D Matrix3D_add(struct Matrix3D mat1, struct Matrix3D mat2);
