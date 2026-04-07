@@ -2,7 +2,7 @@
 #include <cmath>
 #include<array>
 #include"MyMath.h"
-#include"transform.h"
+#include"function.h"
 #define _USE_MATH_DEFINES
 
 using namespace std;
@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-	struct myRender_vector_4 cube[8];
+	struct myRender_vector_4 cube[8] ;
 	cube[0].position = { 0,0,0,1 }; cube[0].color = { 255,0,0 };
 	cube[1].position = { 1,0,0,1 }; cube[1].color = { 0,255,0 };
 	cube[2].position = { 1,0,1,1 }; cube[2].color = { 0,0,255 };
@@ -22,7 +22,7 @@ int main()
 	cube[6].position = { 1,1,0,1 }; cube[6].color = { 0,0,0 };
 	cube[7].position = { 1,1,1,1 }; cube[7].color = { 255,255,255};
 
-	struct myRender_triangle cube_index[12];
+	struct myRender_triangle cube_index[12] ;
 	cube_index[0].index = { 0,1,2 }; cube_index[1].index = { 2,3,0 };//背面
 	cube_index[2].index = { 0,4,5 }; cube_index[3].index = { 5,3,0 };//左侧
 	cube_index[4].index = { 1,6,7 }; cube_index[5].index = { 7,2,1 };//右侧
@@ -41,11 +41,16 @@ int main()
 	myFrustum.aspect = 1.0f / 1.0f;//45°角，丑但是好验证
 	myFrustum.fov = 45.0f;
 
+	int width = 800;
+	int height = 600;
+
 	for (int i = 0; i < sizeof(cube) / sizeof(cube[0]);i++)
 	{
-		MVP_trans(myCamera, cube[i], myFrustum);
+		MVP_trans(myCamera, cube[i], myFrustum, width,height);
 	}
-	
+
+	const char filename[] = "myimage";
+
 
 
 }

@@ -15,7 +15,7 @@ struct myRender_vector_4 {
 
 };
 struct myRender_triangle {
-	std::array<int, 3> index;
+	std::array<int, 3> index = { 0 };
 };
 
 struct myRender_vector_4 cross_product3D(const std::array<float, 4>& a, const std::array<float, 4>& b);
