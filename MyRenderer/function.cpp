@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include<array>
+#include<vector>
 #include"MyMath.h"
 #include"function.h"
 #include"stb_image_write.h"
@@ -65,12 +66,33 @@ void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struc
 	vector.position[2] *= w;
 	
 	vector.position[0] = (vector.position[0] + 1) * 0.5 * width;
-	vector.position[1] = ((1 - (vector.position[1] + 1)) * 0.5) * height;
+	vector.position[1] = (1.0f - (vector.position[1] + 1.0f) * 0.5f) * height;
 
 }
 
-void Resterization(char const* filename, myRender_vector_4& vector, int width, int height)
+void Resterization(char const* filename, myRender_vector_4* vector, myRender_triangle* triangle, int triangleCount,int comp,int width, int height)
 {
+	int full_dot = width * height * comp;
+	std::vector<int> image_xy(full_dot, 0);
+	for (int i = 0; i < triangleCount; i++)
+	{
+		
+		float A = triangle[i].index[0];
+		float B = triangle[i].index[1];
+		float C = triangle[i].index[2];
+
+		float xmin = 10000, ymin = 10000, xmax = -10000, ymax = -10000;
+		for (int j = 0; j < 3; j++)
+		{
+			if (vector[triangle[i].index[j]].position[0] > xmax) xmax = vector[triangle[i].index[j]].position[0];
+			if (vector[triangle[i].index[j]].position[1] > ymax) ymax = vector[triangle[i].index[j]].position[1];
+
+			if (vector[triangle[i].index[j]].position[0] < xmin) xmin = vector[triangle[i].index[j]].position[0];
+			if (vector[triangle[i].index[j]].position[1] < ymin) ymin = vector[triangle[i].index[j]].position[1];
+		}
+
+
+	}
 
 
 }

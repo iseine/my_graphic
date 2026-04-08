@@ -51,6 +51,10 @@ int main()
 
 	const char filename[] = "myimage";
 
+	myRender_vector_4 back_color;
+	back_color.color = { 255,255,255 };
+	
+
 
 
 }
