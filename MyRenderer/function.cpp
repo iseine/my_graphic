@@ -8,6 +8,12 @@
 #define STBI_WINDOWS_UTF8
 #define _USE_MATH_DEFINES
 
+unsigned char clamp(float x) {
+	if (x > 255.0f) return 255;
+	if (x < 0.0f) return 0;
+	return (unsigned char)x;
+}
+
 void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struct viewing_frustum_Prespective myFrustum,int width,int height)
 {
 	struct Matrix3D view_matrix;
@@ -76,10 +82,10 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 	std::vector<int> image_xy(full_dot, 0);
 	for (int i = 0; i < triangleCount; i++)
 	{
-		
-		float A = triangle[i].index[0];
-		float B = triangle[i].index[1];
-		float C = triangle[i].index[2];
+		/*
+		float A = triangle[i].index[0];//三角形顶点A
+		float B = triangle[i].index[1];//三角形顶点B
+		float C = triangle[i].index[2];//三角形顶点C*/
 
 		float xmin = 10000, ymin = 10000, xmax = -10000, ymax = -10000;
 		for (int j = 0; j < 3; j++)
@@ -90,7 +96,46 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 			if (vector[triangle[i].index[j]].position[0] < xmin) xmin = vector[triangle[i].index[j]].position[0];
 			if (vector[triangle[i].index[j]].position[1] < ymin) ymin = vector[triangle[i].index[j]].position[1];
 		}
+		for (int current_x=xmin; current_x <= xmax; current_x++)
+		{
+			for (int current_y=ymin; current_y <= ymax; current_y++)
+			{
+				//当前像素image[current_y*(ymax-ymin)+current_x],当前点(current_x,current_y)
+				float xa = vector[triangle[i].index[0]].position[0];
+				float ya = vector[triangle[i].index[0]].position[1];
 
+				float xb = vector[triangle[i].index[1]].position[0];
+				float yb = vector[triangle[i].index[1]].position[1];
+
+				float xc = vector[triangle[i].index[2]].position[0];
+				float yc = vector[triangle[i].index[2]].position[1];
+
+				float denominator_c = ((ya - yb) * xc) + ((xb - xa) * yc) + ((xa * yb) - (xb * ya));
+				float numerator_c = ((ya - yb) * current_x) + ((xb - xa) * current_y) + ((xa * yb) - (xb * ya));
+				
+				if (denominator_c == 0) { continue; }//
+				float c = numerator_c / denominator_c;
+
+				float denominator_b = ((ya - yc) * xb) + ((xc - xa) * ya) + ((xa * yc) - (xc * ya));
+				float numerator_b = ((ya - yc) * current_x) + ((xc - xa) * current_y) + ((xa * yc) - (xc * ya));
+
+				if (denominator_b == 0) { continue; }//
+				float b = numerator_b / denominator_b;
+
+				float a = 1 - b - c;
+
+				if (a > 0 && c > 0 && b > 0)
+				{
+					float color_r = (a * vector[triangle[i].index[0]].color[0]) + (b * vector[triangle[i].index[1]].color[0]) + (c * vector[triangle[i].index[2]].color[0]);
+					float color_g = (a * vector[triangle[i].index[0]].color[1]) + (b * vector[triangle[i].index[1]].color[1]) + (c * vector[triangle[i].index[2]].color[1]);
+					float color_b = (a * vector[triangle[i].index[0]].color[2]) + (b * vector[triangle[i].index[1]].color[2]) + (c * vector[triangle[i].index[2]].color[2]);
+
+					unsigned char r = clamp(color_r);
+					unsigned char g = clamp(color_g);
+					unsigned char b = clamp(color_b);
+				}
+			}
+		}
 
 	}
 

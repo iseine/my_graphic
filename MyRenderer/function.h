@@ -20,3 +20,5 @@ struct viewing_frustum_Prespective {
 void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struct viewing_frustum_Prespective myFrustum, int width, int height);
 
 void Resterization(char const* filename, myRender_vector_4* vector, myRender_triangle* triangle, int triangleCount, int comp, int width, int height);
+
+unsigned char clamp(float x);
