@@ -1,9 +1,10 @@
-﻿#include <iostream>
+﻿#define _USE_MATH_DEFINES
+#include <iostream>
 #include <cmath>
 #include<array>
 #include"MyMath.h"
 #include"function.h"
-#define _USE_MATH_DEFINES
+
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int main()
 	cube_index[10].index = { 4,6,7 }; cube_index[11].index = { 7,5,4 };//正面
 
 	struct camera_set myCamera;
-	myCamera.position = { 2,2,5,0 };
+	myCamera.position = { 0.5, 0, 4.0,0 };
 	myCamera.lookat = { 0.5, 0.5, 0.5, 0 };
 	myCamera.up = { 0,1,0,0 };
 
@@ -44,17 +45,21 @@ int main()
 	int width = 800;
 	int height = 600;
 
+	/*for (int i = 0; i < 8; i++) {
+		printf("cube[%d]: (%f, %f, %f, %f)\n", i,
+			cube[i].position[0], cube[i].position[1], cube[i].position[2], cube[i].position[3]);
+	}*/
+	/*test_mvp_transform(myCamera, cube[0], myFrustum, width, height);
+	test_mvp_transform(myCamera, cube[1], myFrustum, width, height); */
 	for (int i = 0; i < sizeof(cube) / sizeof(cube[0]);i++)
 	{
 		MVP_trans(myCamera, cube[i], myFrustum, width,height);
 	}
-
-	const char filename[] = "myimage";
-
-	myRender_vector_4 back_color;
-	back_color.color = { 255,255,255 };
+	/*for (int i = 0; i < 8; i++) {
+		printf("after MVP cube[%d]: (%f, %f, %f)\n", i,
+			cube[i].position[0], cube[i].position[1], cube[i].position[2]);
+	}*/
+	const char filename[] = "myimage.png";
+	Resterization(filename, cube, cube_index, 12, 3, width, height);
 	
-
-
-
 }
