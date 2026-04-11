@@ -32,7 +32,7 @@ int main()
 	cube_index[10].index = { 4,6,7 }; cube_index[11].index = { 7,5,4 };//正面
 
 	struct camera_set myCamera;
-	myCamera.position = { 0.5, 0, 4.0,0 };
+	myCamera.position = { 2, 2,5,0 };
 	myCamera.lookat = { 0.5, 0.5, 0.5, 0 };
 	myCamera.up = { 0,1,0,0 };
 

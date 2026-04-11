@@ -48,8 +48,6 @@ void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struc
 
 	float screen_x = 0, screen_y = 0;
 
-	camera_X_axis = cross_product3D(camera.lookat, camera.up);
-
 	translation.matrix[0][3] = -camera.position[0];
 	translation.matrix[1][3] = -camera.position[1];
 	translation.matrix[2][3] = -camera.position[2];
@@ -58,28 +56,30 @@ void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struc
 	translation.matrix[1][1] = 1;
 	translation.matrix[2][2] = 1;
 
-	myRender_vector_4 lookat;
-	lookat.position= camera.lookat;
+	myRender_vector_4 forward;
+	forward.position[0] = camera.lookat[0] - camera.position[0];
+	forward.position[1] = camera.lookat[1] - camera.position[1];
+	forward.position[2] = camera.lookat[2] - camera.position[2];
+	forward.position[3] = 0;;
 
-	struct myRender_vector_4 forward = normalize(lookat);  // 假设 lookat 已经是方向
+	forward = normalize(forward);  // 假设 lookat 已经是方向
 	struct myRender_vector_4 right = normalize(cross_product3D(forward.position, camera.up));
 	struct myRender_vector_4 up = normalize(cross_product3D(right.position, forward.position));
 
 	// 2. 构造旋转矩阵（列向量：每一列是一个轴）
 	rotate.matrix[0][0] = right.position[0];
-	rotate.matrix[1][0] = right.position[1];
-	rotate.matrix[2][0] = right.position[2];
-	rotate.matrix[0][1] = up.position[0];
+	rotate.matrix[0][1] = right.position[1];
+	rotate.matrix[0][2] = right.position[2];
+
+	rotate.matrix[1][0] = up.position[0];
 	rotate.matrix[1][1] = up.position[1];
-	rotate.matrix[2][1] = up.position[2];
-	rotate.matrix[0][2] = forward.position[0];
-	rotate.matrix[1][2] = forward.position[1];
-	rotate.matrix[2][2] = forward.position[2];
+	rotate.matrix[1][2] = up.position[2];
+
+	rotate.matrix[2][0] = -forward.position[0];
+	rotate.matrix[2][1] = -forward.position[1];
+	rotate.matrix[2][2] = -forward.position[2];
+
 	rotate.matrix[3][3] = 1;
-	rotate.matrix[0][0] = camera_X_axis.position[0];
-	rotate.matrix[0][1] = camera_X_axis.position[1];
-	rotate.matrix[0][2] = camera_X_axis.position[2];
-	rotate.matrix[0][3] = 0;
 
 	/*rotate.matrix[1][0] = camera.up[0];
 	rotate.matrix[1][1] = camera.up[1];
@@ -93,7 +93,7 @@ void MVP_trans(struct camera_set camera, struct myRender_vector_4& vector, struc
 
 	rotate.matrix[3][3] = 1;*/
 
-	view_matrix = Matrix3D_muilti(translation, rotate);;
+	view_matrix = Matrix3D_muilti(rotate,translation);;
 
 	float rad = myFrustum.fov * 3.1415926535f / 180.0f;
 	float tan_half = tanf(rad / 2.0f);
@@ -158,13 +158,13 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 				float denominator_c = ((ya - yb) * xc) + ((xb - xa) * yc) + ((xa * yb) - (xb * ya));
 				float numerator_c = ((ya - yb) * current_x) + ((xb - xa) * current_y) + ((xa * yb) - (xb * ya));
 				
-				if (denominator_c == 0) { continue; }//
+				if (denominator_c == 0) { continue; }
 				float c = numerator_c / denominator_c;
 
 				float denominator_b = ((ya - yc) * xb) + ((xc - xa) * ya) + ((xa * yc) - (xc * ya));
 				float numerator_b = ((ya - yc) * current_x) + ((xc - xa) * current_y) + ((xa * yc) - (xc * ya));
 
-				if (denominator_b == 0) { continue; }//
+				if (denominator_b == 0) { continue; }
 				float b = numerator_b / denominator_b;
 
 				float a = 1 - b - c;
