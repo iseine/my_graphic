@@ -28,3 +28,5 @@ unsigned char clamp(float x);
 	struct viewing_frustum_Prespective myFrustum,  // 注意这里
 	int width, int height);
 struct myRender_vector_4 normalize(struct myRender_vector_4 v);*/
+
+bool Z_buffer_judge(float* Z_buffer, float Z_data, int screen_x, int screen_y, int width, int height);

@@ -37,6 +37,7 @@ struct myRender_vector_4 Matrix3D_muilti(struct Matrix3D mat,struct myRender_vec
 
 	struct myRender_vector_4 sum = {0};
 	sum.color = vector.color;
+	sum.view_z = vector.view_z;
 	for (int i = 0; i <4 ; i++)
 	{
 		for (int j = 0; j < 4; j++)

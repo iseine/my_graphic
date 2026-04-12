@@ -12,6 +12,7 @@ struct myRender_vector_4 {
 	//float position[4] = { 0 };
 	std::array<short, 3> color = {0};
 	//short color[3] = { 0 };
+	float view_z = 0.0f;
 
 };
 struct myRender_triangle {
