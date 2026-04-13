@@ -144,7 +144,7 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 		vector[triangle[0].index[2]].position[0], vector[triangle[0].index[2]].position[1]);*/
 	int full_dot = width * height * comp;
 	std::vector<unsigned char> image_xy(full_dot, 255);
-	std::vector<float> Z_buffer(full_dot, 1000);
+	std::vector<float> Z_buffer(width * height, 1000);
 	for (int i = 0; i < triangleCount; i++)
 	{
 
@@ -172,7 +172,7 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 				float xc = vector[triangle[i].index[2]].position[0];
 				float yc = vector[triangle[i].index[2]].position[1];
 
-				float denominator_c = ((ya - yb) * xc) + ((xb - xa) * yc) + ((xa * yb) - (xb * ya));
+				/*float denominator_c = ((ya - yb) * xc) + ((xb - xa) * yc) + ((xa * yb) - (xb * ya));
 				float numerator_c = ((ya - yb) * current_x) + ((xb - xa) * current_y) + ((xa * yb) - (xb * ya));
 				
 				if (denominator_c == 0) { continue; }
@@ -184,9 +184,15 @@ void Resterization(char const* filename, myRender_vector_4* vector, myRender_tri
 				if (denominator_b == 0) { continue; }
 				float b = numerator_b / denominator_b;
 
-				float a = 1 - b - c;
+				float a = 1 - b - c;*/
+				float area = (xb - xa) * (yc - ya) - (yb - ya) * (xc - xa);
 
-				if (a > 0 && c > 0 && b > 0)
+				float a = ((xb - current_x) * (yc - current_y) - (yb - current_y) * (xc - current_x)) / area;
+				float b = ((xc - current_x) * (ya - current_y) - (yc - current_y) * (xa - current_x)) / area;
+				float c = 1 - a - b;
+
+
+				if (a >= 0 && c >= 0 && b >= 0)
 				{
 					bool Z_buffer_buffer = false;
 					float za = vector[triangle[i].index[0]].view_z;
